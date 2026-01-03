@@ -156,10 +156,11 @@ const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-             {/* Quick Actions */}
+            {/* Quick Actions */}
              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <h3 className="font-bold text-gray-800 dark:text-white mb-4">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-4">
+                  {/* 1. My Profile */}
                   <button 
                     onClick={() => navigate('/profile')}
                     className="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors flex flex-col items-center gap-2"
@@ -167,15 +168,30 @@ const Dashboard = () => {
                     <Users size={24} />
                     <span className="font-medium">My Profile</span>
                   </button>
-                  <button className="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors flex flex-col items-center gap-2">
+
+                  {/* 2. Mark Attendance (Linked) */}
+                  <button 
+                    onClick={() => navigate('/employee/attendance')}
+                    className="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors flex flex-col items-center gap-2"
+                  >
                     <Calendar size={24} />
                     <span className="font-medium">Mark Attendance</span>
                   </button>
-                  <button className="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex flex-col items-center gap-2">
+
+                  {/* 3. Apply Leave (Linked) */}
+                  <button 
+                    onClick={() => navigate('/employee/leaves')}
+                    className="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex flex-col items-center gap-2"
+                  >
                     <FileText size={24} />
                     <span className="font-medium">Apply Leave</span>
                   </button>
-                  <button className="p-4 rounded-xl bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors flex flex-col items-center gap-2">
+
+                  {/* 4. Payslips (Linked) */}
+                  <button 
+                    onClick={() => navigate('/employee/salary')}
+                    className="p-4 rounded-xl bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors flex flex-col items-center gap-2"
+                  >
                     <DollarSign size={24} />
                     <span className="font-medium">Payslips</span>
                   </button>
