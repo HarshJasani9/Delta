@@ -41,9 +41,9 @@ A full-stack **Employee Management System** built with the **MERN Stack** (Mongo
 
 ---
 Contrinutors :
-Harsh Jasani	Full Stack Developer	@HarshJasani9
-Vansh Lunagariya	Frontend / UI Design	@Vansh-dev1
-Tushar Patoliya	Backend / Database	@Tushar-coder99
+Harsh Jasani	Full Stack Developer	@HarshJasani9 *
+Vansh Lunagariya	Frontend / UI Design	@Vansh-dev1 *
+Tushar Patoliya	Backend / Database	@Tushar-coder99 *
 Preet Ardeshna	Documentation / QA	@preettt10
 
 ## 🚀 Getting Started
