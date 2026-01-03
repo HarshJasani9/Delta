@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Briefcase, ArrowRight, Sun, Moon, ArrowLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-
+<p>hii</p>
 const Register = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
