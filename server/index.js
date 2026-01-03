@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import connectToDatabase from './db/db.js';
 
-// Import Routes
+// Import 
+
+import authRouter from './routes/auth.js';
 import leaveRouter from './routes/leave.js';
 import attendanceRouter from './routes/attendance.js';
 import salaryRouter from './routes/salary.js'; // <--- MAKE SURE THIS IS HERE
