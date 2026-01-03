@@ -24,6 +24,6 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   // 4. Authorized? -> Render the Page
   return children;
-};
+};asdf
 
 export default ProtectedRoute;
