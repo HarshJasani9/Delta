@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Users, Briefcase, Clock, AlertCircle, 
-  CheckCircle, XCircle, Calendar, DollarSign, 
-  ChevronRight, FileText
+  Users, DollarSign, Clock, AlertCircle, 
+  CheckCircle, XCircle, Calendar, FileText, 
+  Briefcase
 } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   // Mock Role State - Toggle using top right buttons
+  // Defaulting to 'admin' so you can see the new Payroll card immediately
   const [userRole, setUserRole] = useState('admin'); 
 
   return (
@@ -23,7 +24,7 @@ const Dashboard = () => {
           <p className="text-gray-500 dark:text-gray-400">Welcome back, John Doe</p>
         </div>
         
-        {/* Role Switcher for Testing */}
+        {/* Role Switcher for Testing (Remove in Production) */}
         <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-xs font-bold text-gray-500 uppercase px-2">Test View:</span>
           <button 
@@ -46,15 +47,15 @@ const Dashboard = () => {
          ========================================= */}
       {userRole === 'admin' && (
         <>
-          {/* Top Stats Cards [Matches image_40930b.png] */}
+          {/* Admin Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            {/* 1. Total Employees */}
+            {/* 1. Total Employees -> /admin/employees */}
             <div 
               onClick={() => navigate('/admin/employees')} 
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4 group"
             >
-              <div className="p-4 bg-blue-500 rounded-xl text-white shadow-lg shadow-blue-500/30">
+              <div className="p-4 bg-blue-500 rounded-xl text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
                 <Users size={24} />
               </div>
               <div>
@@ -63,25 +64,26 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* 2. Departments */}
+            {/* 2. Payroll Management -> /admin/payroll */}
             <div 
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4"
+              onClick={() => navigate('/admin/payroll')} 
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4 group"
             >
-              <div className="p-4 bg-purple-500 rounded-xl text-white shadow-lg shadow-purple-500/30">
-                <Briefcase size={24} />
+              <div className="p-4 bg-purple-500 rounded-xl text-white shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+                <DollarSign size={24} />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Departments</p>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">8</h3>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Payroll Cost</p>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">$84k</h3>
               </div>
             </div>
 
-            {/* 3. On Leave Today */}
+            {/* 3. On Leave Today -> /admin/attendance */}
             <div 
               onClick={() => navigate('/admin/attendance')}
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4 group"
             >
-               <div className="p-4 bg-amber-500 rounded-xl text-white shadow-lg shadow-amber-500/30">
+               <div className="p-4 bg-amber-500 rounded-xl text-white shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
                 <Clock size={24} />
               </div>
               <div>
@@ -90,12 +92,12 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* 4. Pending Requests */}
+            {/* 4. Pending Requests -> /admin/leaves */}
             <div 
               onClick={() => navigate('/admin/leaves')}
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4 group"
             >
-               <div className="p-4 bg-rose-500 rounded-xl text-white shadow-lg shadow-rose-500/30">
+               <div className="p-4 bg-rose-500 rounded-xl text-white shadow-lg shadow-rose-500/30 group-hover:scale-110 transition-transform">
                 <AlertCircle size={24} />
               </div>
               <div>
@@ -147,7 +149,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Today's Attendance Chart */}
+            {/* Today's Attendance Overview */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-gray-800 dark:text-white">Today's Attendance</h3>
@@ -198,7 +200,7 @@ const Dashboard = () => {
          ========================================= */}
       {userRole === 'employee' && (
         <>
-          {/* Employee Stats [Matches image_410b08.png] */}
+          {/* Employee Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* 1. Attendance */}
@@ -239,7 +241,7 @@ const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-             {/* Quick Actions [Matches image_410b08.png] */}
+             {/* Quick Actions Grid */}
              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <h3 className="font-bold text-gray-800 dark:text-white mb-4">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-4">
