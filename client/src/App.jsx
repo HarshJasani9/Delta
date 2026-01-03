@@ -1,14 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
+import Login from './pages/login';
 import Dashboard from './pages/Dashboard';
+import EmployeeProfile from './pages/EmployeeProfile';
 import Layout from './components/Layout';
 
 function App() {
   return (
     <Routes>
-      {/* Default route is the Landing Page with the Navbar */}
       <Route 
         path="/" 
         element={
@@ -18,15 +18,22 @@ function App() {
         } 
       />
       
-      {/* Login page (standalone) */}
       <Route path="/login" element={<Login />} />
       
-      {/* Dashboard Protected Route */}
       <Route 
         path="/dashboard" 
         element={
           <Layout>
             <Dashboard />
+          </Layout>
+        } 
+      />
+
+      <Route 
+        path="/profile" 
+        element={
+          <Layout>
+            <EmployeeProfile />
           </Layout>
         } 
       />
