@@ -7,8 +7,9 @@ import {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  // Mock Role State - In the future, this comes from the database/auth
-  const [userRole, setUserRole] = useState('admin'); // Toggle this to 'employee' to see the other view
+  // Mock Role State - In the future, this comes from the database/auth context
+  // Toggle this state using the buttons in the top right to test different views
+  const [userRole, setUserRole] = useState('admin'); 
 
   return (
     <div className="p-6 space-y-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
@@ -23,51 +24,62 @@ const Dashboard = () => {
         </div>
         
         {/* TEMPORARY: Role Switcher for Testing */}
-        <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-xs font-bold text-gray-500 uppercase px-2">Test View:</span>
           <button 
             onClick={() => setUserRole('employee')}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${userRole === 'employee' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${userRole === 'employee' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
           >
             Employee
           </button>
           <button 
             onClick={() => setUserRole('admin')}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${userRole === 'admin' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${userRole === 'admin' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
           >
             Admin
           </button>
         </div>
       </div>
 
-      {/* ADMIN VIEW [Section 3.2.2] */}
+      {/* =========================================
+          ADMIN DASHBOARD VIEW 
+         ========================================= */}
       {userRole === 'admin' && (
         <>
-        {/* Admin Stats Cards */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div onClick={() => navigate('/admin/employees')} className="cursor-pointer transition-transform hover:scale-[1.02]">
-      <StatsCard icon={<Users />} title="Total Employees" value="124" color="bg-blue-500" />
-    </div>
-    <StatsCard icon={<Briefcase />} title="Departments" value="8" color="bg-purple-500" />
-    <StatsCard icon={<Clock />} title="On Leave Today" value="12" color="bg-amber-500" />
-    <div onClick={() => navigate('/admin/leaves')} className="cursor-pointer transition-transform hover:scale-[1.02]">
-      <StatsCard icon={<AlertCircle />} title="Pending Requests" value="5" color="bg-rose-500" />
-    </div>
-  </div>
+          {/* Admin Stats Cards - Now Clickable */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* 1. Employees -> Links to Employee List */}
+            <div onClick={() => navigate('/admin/employees')} className="cursor-pointer transition-transform hover:scale-[1.02]">
+              <StatsCard icon={<Users />} title="Total Employees" value="124" color="bg-blue-500" />
+            </div>
 
-  {/* Admin Quick Actions */}
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    {/* Recent Leave Requests */}
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="font-bold text-gray-800 dark:text-white">Recent Leave Requests</h3>
-        <button 
-          onClick={() => navigate('/admin/leaves')}
-          className="text-sm text-primary hover:underline font-medium"
-        >
-          View All
-        </button>
-      </div>
+            {/* 2. Payroll -> Links to Payroll Management */}
+            <div onClick={() => navigate('/admin/payroll')} className="cursor-pointer transition-transform hover:scale-[1.02]">
+              <StatsCard icon={<DollarSign />} title="Total Payroll" value="$18.8k" color="bg-green-500" />
+            </div>
+
+            {/* 3. On Leave Today - (Read Only for quick status) */}
+            <StatsCard icon={<Clock />} title="On Leave Today" value="12" color="bg-amber-500" />
+
+            {/* 4. Pending Requests -> Links to Leave Requests */}
+            <div onClick={() => navigate('/admin/leaves')} className="cursor-pointer transition-transform hover:scale-[1.02]">
+              <StatsCard icon={<AlertCircle />} title="Pending Requests" value="5" color="bg-rose-500" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Recent Leave Requests */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-bold text-gray-800 dark:text-white">Recent Leave Requests</h3>
+                <button 
+                  onClick={() => navigate('/admin/leaves')} 
+                  className="text-sm text-primary hover:underline font-medium"
+                >
+                  View All
+                </button>
+              </div>
               
               <div className="space-y-4">
                 {[
@@ -87,11 +99,11 @@ const Dashboard = () => {
                     </div>
                     {req.status === 'Pending' ? (
                       <div className="flex gap-2">
-                        <button className="p-2 text-green-600 hover:bg-green-50 rounded-full" title="Approve"><CheckCircle size={18} /></button>
-                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-full" title="Reject"><XCircle size={18} /></button>
+                        <button className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/50 rounded-full transition-colors" title="Approve"><CheckCircle size={18} /></button>
+                        <button className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-full transition-colors" title="Reject"><XCircle size={18} /></button>
                       </div>
                     ) : (
-                      <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Approved</span>
+                      <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-medium">Approved</span>
                     )}
                   </div>
                 ))}
@@ -131,7 +143,9 @@ const Dashboard = () => {
         </>
       )}
 
-      {/* EMPLOYEE VIEW [Section 3.2.1] */}
+      {/* =========================================
+          EMPLOYEE DASHBOARD VIEW 
+         ========================================= */}
       {userRole === 'employee' && (
         <>
           {/* Employee Stats Cards */}
@@ -201,7 +215,7 @@ const Dashboard = () => {
 
 // Helper Component for Stats
 const StatsCard = ({ icon, title, value, subtext, color }) => (
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4 transition-colors">
     <div className={`p-4 rounded-lg text-white ${color} shadow-lg shadow-${color.replace('bg-', '')}/30`}>
       {React.cloneElement(icon, { size: 24 })}
     </div>
