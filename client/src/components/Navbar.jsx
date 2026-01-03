@@ -79,5 +79,5 @@ const Navbar = () => {
     </nav>
   );
 };
-asdfghjk
+
 export default Navbar;
