@@ -112,8 +112,6 @@ const LandingPage = () => {
                 <div className="mb-6 p-3 bg-gray-50 dark:bg-gray-700 w-fit rounded-xl">
                   {feature.icon}
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
