@@ -57,7 +57,7 @@ const Attendance = () => {
                         {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </p>
                 </div>
-                // --- ACTION BUTTONS --- //
+                
                 <div className="flex gap-4 mt-4 md:mt-0">
                     {!todayStatus ? (
                         <button 
