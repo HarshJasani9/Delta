@@ -7,8 +7,10 @@ import {
 } from 'lucide-react';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   // Mock Role State - Toggle using top right buttons
   // Defaulting to 'admin' so you can see the new Payroll card immediately
+  const [userRole, setUserRole] = useState('admin'); 
 
   return (
     <div className="p-6 space-y-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
