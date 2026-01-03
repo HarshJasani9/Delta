@@ -6,12 +6,11 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
+    <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
       <section className="relative pt-20 pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-white -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 -z-10 transition-colors duration-300" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-primary text-sm font-medium mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-primary dark:text-indigo-300 text-sm font-medium mb-8 animate-fade-in">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
@@ -19,14 +18,14 @@ const LandingPage = () => {
             New: Smart Attendance Tracking
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tight mb-8 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-8 leading-tight">
             Streamline Your <br />
             <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
               Workforce Management
             </span>
           </h1>
           
-          <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-10 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
             Empower your team with a comprehensive HR system. Handle leave requests, 
             track attendance, and manage payroll effortlessly—all in one place.
           </p>
@@ -34,20 +33,19 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button 
               onClick={() => navigate('/login')}
-              className="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 flex items-center gap-2"
+              className="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-2"
             >
               Get Started
               <ArrowRight size={20} />
             </button>
-            <button className="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">
+            <button className="px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               View Demo
             </button>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-y border-gray-100 bg-white">
+      <section className="border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -57,23 +55,22 @@ const LandingPage = () => {
               { label: 'Uptime', value: '99.9%' }
             ].map((stat, index) => (
               <div key={index} className="space-y-2">
-                <h3 className="text-4xl font-bold text-gray-900">{stat.value}</h3>
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">{stat.label}</p>
+                <h3 className="text-4xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-primary font-semibold tracking-wide uppercase text-sm mb-3">Features</h2>
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Everything You Need for HR
             </h3>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
               A complete suite of tools designed to make human resource management simple and effective.
             </p>
           </div>
@@ -111,20 +108,19 @@ const LandingPage = () => {
                 desc: "Generate detailed reports on attendance trends, leave balances, and workforce distribution."
               }
             ].map((feature, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="mb-6 p-3 bg-gray-50 w-fit rounded-xl">
+              <div key={idx} className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
+                <div className="mb-6 p-3 bg-gray-50 dark:bg-gray-700 w-fit rounded-xl">
                   {feature.icon}
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h4>
-                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-primary rounded-3xl p-12 md:p-16 text-center text-white relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 opacity-50"></div>
@@ -151,7 +147,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
