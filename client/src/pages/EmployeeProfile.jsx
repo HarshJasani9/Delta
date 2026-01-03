@@ -1,54 +1,65 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation
 import { 
   User, Briefcase, DollarSign, FileText, Mail, Phone, MapPin, 
-  Camera, Save, X, Edit3, UploadCloud, CheckCircle 
+  Camera, Save, X, Edit3, UploadCloud, CheckCircle, ArrowLeft
 } from 'lucide-react';
 
 const EmployeeProfile = () => {
+  const { state } = useLocation(); // Retrieve passed data
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null); 
+  
+  // DETERMINE ROLE: 
+  // If navigated from Admin List, role is 'admin'. Otherwise default to 'employee' (My Profile view)
+  const viewerRole = state?.viewerRole || 'employee'; 
+  const isViewedByAdmin = viewerRole === 'admin';
+
   const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '' });
-  const fileInputRef = useRef(null); 
 
-  // --- NEW: Role Switcher for Testing ---
-  const [currentUserRole, setCurrentUserRole] = useState('employee'); 
+  // Default Mock Data (Fallback)
+  const defaultProfile = {
+    firstName: 'Johnathon', lastName: 'Doe', email: 'john.doe@dayflow.com',
+    phone: '+1 234 567 890', address: '1234 Broadway St, New York, NY',
+    dob: '1990-08-15', gender: 'Male', nationality: 'American', maritalStatus: 'Single',
+    employeeId: 'EMP-2023-001', department: 'Engineering', designation: 'Senior Developer',
+    joiningDate: '2022-01-12', status: 'Full-Time', location: 'New York HQ', manager: 'Sarah Connor',
+    basicSalary: 5000, hra: 2000, allowance: 1000, tax: 800, pf: 200, profileImage: null
+  };
 
-  // State for Form Data
-  const [profile, setProfile] = useState({
-    firstName: 'Johnathon',
-    lastName: 'Doe',
-    email: 'john.doe@dayflow.com',
-    phone: '+1 234 567 890',
-    address: '1234 Broadway St, New York, NY',
-    dob: '1990-08-15',
-    gender: 'Male',
-    nationality: 'American',
-    maritalStatus: 'Single',
-    bloodGroup: 'O+',
-    employeeId: 'EMP-2023-001',
-    department: 'Engineering',
-    designation: 'Senior Developer',
-    joiningDate: '2022-01-12',
-    status: 'Full-Time',
-    location: 'New York HQ',
-    manager: 'Sarah Connor',
-    basicSalary: 5000,
-    hra: 2000,
-    allowance: 1000,
-    tax: 800,
-    pf: 200,
-    profileImage: null 
+  // Initialize Profile State
+  // If data was passed from EmployeeList, merge it. Otherwise use default.
+  const [profile, setProfile] = useState(() => {
+    if (state?.employeeData) {
+      const emp = state.employeeData;
+      // Split name for demo purposes
+      const [first, ...last] = emp.name.split(' ');
+      return {
+        ...defaultProfile,
+        firstName: first,
+        lastName: last.join(' '),
+        email: emp.email,
+        employeeId: emp.id,
+        department: emp.dept,
+        designation: emp.role,
+        status: emp.status,
+        // Merge salary if exists in mock data
+        ...(emp.salary || {}),
+        // Merge other fields if they exist
+        ...(emp.phone ? { phone: emp.phone } : {}),
+        ...(emp.location ? { location: emp.location } : {}),
+      };
+    }
+    return defaultProfile;
   });
 
-  // Calculate Net Salary dynamically
   const netSalary = parseInt(profile.basicSalary) + parseInt(profile.hra) + parseInt(profile.allowance) - parseInt(profile.tax) - parseInt(profile.pf);
 
-  // Helper: Auto-hide notification
   useEffect(() => {
     if (notification.show) {
-      const timer = setTimeout(() => {
-        setNotification({ ...notification, show: false });
-      }, 3000);
+      const timer = setTimeout(() => setNotification({ ...notification, show: false }), 3000);
       return () => clearTimeout(timer);
     }
   }, [notification]);
@@ -58,33 +69,25 @@ const EmployeeProfile = () => {
   };
 
   const handleImageClick = () => {
-    if (isFieldEditable('profilePic')) {
-       fileInputRef.current.click();
-    }
+    if (isFieldEditable('profilePic')) fileInputRef.current.click();
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfile({ ...profile, profileImage: imageUrl });
-    }
+    if (file) setProfile({ ...profile, profileImage: URL.createObjectURL(file) });
   };
 
   const handleSave = () => {
     setIsEditing(false);
-    setNotification({ 
-      show: true, 
-      message: 'Profile changes saved successfully!' 
-    });
+    setNotification({ show: true, message: 'Profile updated successfully!' });
   };
 
   // --- STRICT REQUIREMENT LOGIC ---
   const isFieldEditable = (fieldName) => {
-    // ADMIN: Can edit EVERYTHING [Cite: 3.3.2]
-    if (currentUserRole === 'admin') return true; 
+    // If Admin is viewing, they can edit EVERYTHING.
+    if (isViewedByAdmin) return true; 
     
-    // EMPLOYEE: Can only edit Address, Phone, Picture [Cite: 3.3.2]
+    // If Employee is viewing, restricted fields only.
     const allowedFieldsForEmployee = ['phone', 'address', 'profilePic'];
     return allowedFieldsForEmployee.includes(fieldName);
   };
@@ -98,26 +101,17 @@ const EmployeeProfile = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6 relative">
-      
-      {/* --- TEST ROLE SWITCHER (Remove in Production) --- */}
-      <div className="flex justify-end mb-2">
-         <div className="bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 inline-flex">
-            <button 
-              onClick={() => { setCurrentUserRole('employee'); setIsEditing(false); }}
-              className={`px-3 py-1 text-xs font-bold rounded-md transition-colors ${currentUserRole === 'employee' ? 'bg-indigo-100 text-primary' : 'text-gray-500'}`}
-            >
-              Test as Employee
-            </button>
-            <button 
-              onClick={() => { setCurrentUserRole('admin'); setIsEditing(false); }}
-              className={`px-3 py-1 text-xs font-bold rounded-md transition-colors ${currentUserRole === 'admin' ? 'bg-indigo-100 text-primary' : 'text-gray-500'}`}
-            >
-              Test as Admin
-            </button>
-         </div>
-      </div>
-
       <input type="file" ref={fileInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
+
+      {/* Admin Navigation Header */}
+      {isViewedByAdmin && (
+        <button 
+          onClick={() => navigate('/admin/employees')}
+          className="flex items-center gap-2 text-gray-500 hover:text-primary mb-4 transition-colors"
+        >
+          <ArrowLeft size={20} /> Back to Employee List
+        </button>
+      )}
 
       {/* Notification Toast */}
       {notification.show && (
@@ -135,13 +129,13 @@ const EmployeeProfile = () => {
       {/* Profile Header */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row items-center gap-8 relative">
         
-        {/* Edit/Save Buttons */}
         {!isEditing ? (
           <button 
             onClick={() => setIsEditing(true)}
             className="absolute top-6 right-6 flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 rounded-lg transition-colors"
           >
-            <Edit3 size={16} /> Edit Profile
+            <Edit3 size={16} /> 
+            {isViewedByAdmin ? 'Edit Employee' : 'Edit Profile'}
           </button>
         ) : (
           <div className="absolute top-6 right-6 flex items-center gap-3">
@@ -176,7 +170,10 @@ const EmployeeProfile = () => {
         </div>
         
         <div className="text-center md:text-left space-y-2 flex-1">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{profile.firstName} {profile.lastName}</h1>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            {profile.firstName} {profile.lastName}
+            {isViewedByAdmin && <span className="ml-3 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full align-middle">Admin View</span>}
+          </h1>
           <p className="text-lg text-primary font-medium">{profile.designation}</p>
           <div className="flex flex-wrap gap-4 text-gray-500 dark:text-gray-400 mt-2">
             <span className="flex items-center gap-1 text-sm"><Mail size={16} /> {profile.email}</span>
@@ -218,7 +215,7 @@ const EmployeeProfile = () => {
           </div>
         )}
 
-        {/* --- JOB DETAILS (Now Editable for Admin) --- */}
+        {/* --- JOB DETAILS --- */}
         {activeTab === 'job' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 animate-fade-in">
              <FormField label="Employee ID" name="employeeId" value={profile.employeeId} isEditing={isEditing} editable={isFieldEditable('employeeId')} onChange={handleChange} />
@@ -231,7 +228,7 @@ const EmployeeProfile = () => {
           </div>
         )}
 
-        {/* --- SALARY (Now Editable for Admin) --- */}
+        {/* --- SALARY --- */}
         {activeTab === 'salary' && (
           <div className="animate-fade-in space-y-6">
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -277,7 +274,7 @@ const EmployeeProfile = () => {
   );
 };
 
-// --- Updated FormField to handle Compact mode for Salary ---
+// --- Reusable Components (Same as before) ---
 const FormField = ({ label, name, value, type = "text", isEditing, editable, onChange, fullWidth, highlight, compact }) => (
   <div className={`${fullWidth ? 'col-span-1 md:col-span-2' : ''} ${compact ? 'flex justify-between items-center' : ''}`}>
     <label className={`block text-sm font-medium text-gray-500 dark:text-gray-400 ${compact ? 'mb-0' : 'mb-1.5'}`}>{label}</label>
