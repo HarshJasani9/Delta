@@ -2,11 +2,18 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/login';
+import Register from './pages/Register'; // New Import
 import Dashboard from './pages/Dashboard';
 import EmployeeProfile from './pages/EmployeeProfile';
+// Admin Imports
 import EmployeeList from './pages/admin/EmployeeList';
 import LeaveRequests from './pages/admin/LeaveRequests';
-import PayrollList from './pages/admin/PayrollList'; // Import new page
+import PayrollList from './pages/admin/PayrollList';
+// Employee Imports
+import Attendance from './pages/employee/Attendance';
+import LeaveApplication from './pages/employee/LeaveApplication';
+import SalaryDetails from './pages/employee/SalaryDetails';
+
 import Layout from './components/Layout';
 
 function App() {
@@ -14,13 +21,20 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout><LandingPage /></Layout>} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} /> {/* New Route */}
+      
       <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
       <Route path="/profile" element={<Layout><EmployeeProfile /></Layout>} />
       
       {/* Admin Routes */}
       <Route path="/admin/employees" element={<Layout><EmployeeList /></Layout>} />
       <Route path="/admin/leaves" element={<Layout><LeaveRequests /></Layout>} />
-      <Route path="/admin/payroll" element={<Layout><PayrollList /></Layout>} /> {/* New Route */}
+      <Route path="/admin/payroll" element={<Layout><PayrollList /></Layout>} />
+
+      {/* Employee Routes */}
+      <Route path="/employee/attendance" element={<Layout><Attendance /></Layout>} />
+      <Route path="/employee/leaves" element={<Layout><LeaveApplication /></Layout>} />
+      <Route path="/employee/salary" element={<Layout><SalaryDetails /></Layout>} />
     </Routes>
   );
 }
