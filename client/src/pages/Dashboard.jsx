@@ -69,9 +69,6 @@ const Dashboard = () => {
               onClick={() => navigate('/admin/payroll')} 
               className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all flex items-center gap-4 group"
             >
-              <div className="p-4 bg-purple-500 rounded-xl text-white shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
-                <DollarSign size={24} />
-              </div>
               <div>
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Payroll Cost</p>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white">$84k</h3>
