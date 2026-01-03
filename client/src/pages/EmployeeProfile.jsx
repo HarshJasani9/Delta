@@ -19,7 +19,6 @@ const EmployeeProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '' });
 
-  // Default Mock Data (Fallback)
   const defaultProfile = {
     firstName: 'Johnathon', lastName: 'Doe', email: 'john.doe@dayflow.com',
     phone: '+1 234 567 890', address: '1234 Broadway St, New York, NY',
