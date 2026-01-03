@@ -1,6 +1,5 @@
 import express from 'express';
 import { getAttendance, getTodayStatus, updateAttendance } from '../controllers/attendanceController.js';
-import verifyUser from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
