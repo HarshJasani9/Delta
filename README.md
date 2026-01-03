@@ -40,7 +40,7 @@ A full-stack **Employee Management System** built with the **MERN Stack** (Mongo
 * **Tools:** Vite, Axios, Multer, Recharts
 
 ---
-Contrinutors :
+Contributors :
 Harsh Jasani	Full Stack Developer	@HarshJasani9 *
 Vansh Lunagariya	Frontend / UI Design	@Vansh-dev1 *
 Tushar Patoliya	Backend / Database	@Tushar-coder99 *
