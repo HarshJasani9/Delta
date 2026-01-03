@@ -11,10 +11,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/uploads'); // Save here
     },
-    filename: (req, file, cb) => {
-        // Name format: fieldname_date.jpg
-        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-    }
+
 });
 const upload = multer({ storage: storage });
 // ----------------------------
