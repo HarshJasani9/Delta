@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Briefcase, ArrowRight, ShieldCheck } from 'lucide-react';
+import { User, Mail, Lock, Briefcase, ArrowRight, Sun, Moon, ArrowLeft } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  
   const [formData, setFormData] = useState({
     name: '',
     employeeId: '',
@@ -37,8 +40,27 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors duration-300 px-4">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100 dark:border-gray-700">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors duration-300 px-4 relative">
+      
+      {/* Back to Home Button (Top Left) */}
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"
+      >
+        <ArrowLeft size={20} />
+        <span className="hidden sm:inline">Back to Home</span>
+      </button>
+
+      {/* Theme Toggle Button (Top Right) - NEW */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 p-3 rounded-full bg-white dark:bg-gray-800 shadow-md hover:shadow-lg text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300"
+      >
+        {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+      </button>
+
+      {/* Register Card */}
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100 dark:border-gray-700 mt-12 sm:mt-0">
         
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
