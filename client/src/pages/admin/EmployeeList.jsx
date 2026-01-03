@@ -1,14 +1,34 @@
 import React, { useState } from 'react';
-import { Search, Plus, Filter, MoreVertical, Edit, Trash2, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Search, Plus, Filter, Edit, Trash2, Eye } from 'lucide-react';
 
 const EmployeeList = () => {
-  // Mock Data
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Extended Mock Data to show different profiles
   const [employees] = useState([
-    { id: 'EMP001', name: 'John Doe', role: 'Software Engineer', dept: 'Engineering', status: 'Active', email: 'john@dayflow.com' },
-    { id: 'EMP002', name: 'Sarah Wilson', role: 'HR Manager', dept: 'Human Resources', status: 'Active', email: 'sarah@dayflow.com' },
-    { id: 'EMP003', name: 'Mike Ross', role: 'Product Designer', dept: 'Design', status: 'On Leave', email: 'mike@dayflow.com' },
-    { id: 'EMP004', name: 'Rachel Green', role: 'Marketing Lead', dept: 'Marketing', status: 'Active', email: 'rachel@dayflow.com' },
+    { 
+      id: 'EMP001', name: 'John Doe', role: 'Software Engineer', dept: 'Engineering', status: 'Active', email: 'john@dayflow.com',
+      phone: '+1 234 567 890', location: 'New York HQ', joiningDate: '2022-01-12', manager: 'Sarah Connor',
+      salary: { basic: 5000, hra: 2000, allowance: 1000, tax: 800, pf: 200 }
+    },
+    { 
+      id: 'EMP002', name: 'Sarah Wilson', role: 'HR Manager', dept: 'Human Resources', status: 'Active', email: 'sarah@dayflow.com',
+      phone: '+1 987 654 321', location: 'London Office', joiningDate: '2021-03-15', manager: 'Mike Ross',
+      salary: { basic: 6000, hra: 2500, allowance: 1200, tax: 900, pf: 300 }
+    },
+    { 
+      id: 'EMP003', name: 'Mike Ross', role: 'Product Designer', dept: 'Design', status: 'On Leave', email: 'mike@dayflow.com',
+      phone: '+1 555 666 777', location: 'Remote', joiningDate: '2023-06-01', manager: 'John Doe',
+      salary: { basic: 4500, hra: 1800, allowance: 900, tax: 600, pf: 150 }
+    },
   ]);
+
+  // FUNCTION: Handle Edit Click
+  const handleEdit = (employee) => {
+    // Navigate to profile, passing the employee object and the 'admin' role in state
+    navigate('/profile', { state: { employeeData: employee, viewerRole: 'admin' } });
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -76,10 +96,18 @@ const EmployeeList = () => {
                   </td>
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" title="View Profile">
+                      <button 
+                        onClick={() => handleEdit(emp)} // Trigger View Only or View Logic
+                        className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" 
+                        title="View Profile"
+                      >
                         <Eye size={18} />
                       </button>
-                      <button className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" title="Edit">
+                      <button 
+                        onClick={() => handleEdit(emp)} // Trigger Edit Logic
+                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" 
+                        title="Edit Details"
+                      >
                         <Edit size={18} />
                       </button>
                       <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" title="Delete">
