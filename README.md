@@ -40,6 +40,11 @@ A full-stack **Employee Management System** built with the **MERN Stack** (Mongo
 * **Tools:** Vite, Axios, Multer, Recharts
 
 ---
+Contrinutors :
+Harsh Jasani	Full Stack Developer	@HarshJasani9
+Vansh Lunagariya	Frontend / UI Design	@Vansh-dev1
+Tushar Patoliya	Backend / Database	@Tushar-coder99
+Preet Ardeshna	Documentation / QA	@preettt10
 
 ## 🚀 Getting Started
 
@@ -57,7 +62,3 @@ Make sure you have the following installed:
 git clone [https://github.com/your-username/dayflow-hrms.git](https://github.com/your-username/dayflow-hrms.git)
 cd dayflow-hrms
 
-Harsh Jasani	Full Stack Developer	@HarshJasani9
-Vansh Lunagariya	Frontend / UI Design	@Vansh-dev1
-Tushar Patoliya	Backend / Database	@Tushar-coder99
-Preet Ardeshna	Documentation / QA	@preettt10
