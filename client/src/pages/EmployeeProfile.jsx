@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   User, Briefcase, DollarSign, FileText, Mail, Phone, MapPin, 
-  Camera, Save, X, Edit3, UploadCloud 
+  Camera, Save, X, Edit3, UploadCloud, CheckCircle 
 } from 'lucide-react';
 
 const EmployeeProfile = () => {
   const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
+  const [notification, setNotification] = useState({ show: false, message: '' });
   
-  // Mock Logic: Change this to 'admin' to test Admin capabilities
-  // In a real app, this comes from your Auth Context
+  // ROLE SETTING: Defaulted to 'employee' to test Section 3.3.2 requirements
+  // Change to 'admin' to see full edit access
   const currentUserRole = 'employee'; 
 
   // State for Form Data
@@ -33,22 +34,40 @@ const EmployeeProfile = () => {
     manager: 'Sarah Connor',
   });
 
-  // Handle Input Change
+  // Helper: Auto-hide notification after 3 seconds
+  useEffect(() => {
+    if (notification.show) {
+      const timer = setTimeout(() => {
+        setNotification({ ...notification, show: false });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
   const handleSave = () => {
+    // 1. Close Edit Mode
     setIsEditing(false);
-    // API Call to save data would go here
-    alert("Profile Updated Successfully!");
+    
+    // 2. Show UI Notification (No Popup)
+    setNotification({ 
+      show: true, 
+      message: 'Profile changes saved successfully!' 
+    });
+
+    // In a real app: axios.put('/api/profile', profile)...
   };
 
-  // Helper to determine if a specific field is editable
+  // STRICT REQUIREMENT CHECK [Section 3.3.2]
+  // Employees can ONLY edit: Address, Phone, Profile Picture
   const isFieldEditable = (fieldName) => {
     if (currentUserRole === 'admin') return true; // Admin edits everything
-    // Employee can only edit these specific fields (Section 3.3.2)
-    return ['phone', 'address', 'profilePic'].includes(fieldName); 
+    
+    const allowedFieldsForEmployee = ['phone', 'address', 'profilePic'];
+    return allowedFieldsForEmployee.includes(fieldName);
   };
 
   const tabs = [
@@ -59,12 +78,35 @@ const EmployeeProfile = () => {
   ];
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 relative">
       
-      {/* Header & Profile Picture [Section 3.3.1 & 3.3.2] */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row items-center gap-8 relative">
+      {/* =======================
+          UI NOTIFICATION TOAST 
+         ======================= */}
+      {notification.show && (
+        <div className="fixed top-24 right-6 z-50 animate-bounce-in">
+          <div className="bg-gray-800 dark:bg-white text-white dark:text-gray-900 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 min-w-[300px]">
+            <div className="bg-green-500 rounded-full p-1">
+              <CheckCircle size={16} className="text-white" />
+            </div>
+            <div>
+              <h4 className="font-bold text-sm">Success</h4>
+              <p className="text-sm opacity-90">{notification.message}</p>
+            </div>
+            <button 
+              onClick={() => setNotification({ ...notification, show: false })}
+              className="ml-auto text-gray-400 hover:text-white dark:hover:text-gray-600"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Header & Profile Picture */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row items-center gap-8 relative transition-colors">
         
-        {/* Edit Button (Top Right) */}
+        {/* Edit Action Buttons */}
         {!isEditing ? (
           <button 
             onClick={() => setIsEditing(true)}
@@ -90,21 +132,21 @@ const EmployeeProfile = () => {
           </div>
         )}
 
-        {/* Profile Image with Edit Overlay */}
+        {/* Profile Image - Editable Rule Applied */}
         <div className="relative group">
           <div className="w-32 h-32 rounded-full bg-gradient-to-r from-primary to-purple-600 p-1">
             <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden">
-               {/* Placeholder or Real Image */}
                <span className="text-4xl font-bold text-gray-800 dark:text-white">
                  {profile.firstName.charAt(0)}{profile.lastName.charAt(0)}
                </span>
             </div>
           </div>
           
-          {/* Camera Icon - Only shows if editing is allowed */}
+          {/* Camera Overlay: Only visible if editing AND profilePic is editable */}
           {isEditing && isFieldEditable('profilePic') && (
-            <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
               <Camera className="text-white" size={24} />
+              <span className="sr-only">Change Picture</span>
             </div>
           )}
         </div>
@@ -143,7 +185,7 @@ const EmployeeProfile = () => {
       {/* Content Area */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 min-h-[400px]">
         
-        {/* TAB 1: PERSONAL DETAILS [Section 3.3.1] */}
+        {/* TAB 1: PERSONAL DETAILS */}
         {activeTab === 'personal' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 animate-fade-in">
              <FormField 
@@ -170,18 +212,22 @@ const EmployeeProfile = () => {
                 label="Marital Status" name="maritalStatus" value={profile.maritalStatus} 
                 isEditing={isEditing} editable={isFieldEditable('maritalStatus')} onChange={handleChange} 
              />
+             {/* Editable for Employee */}
              <FormField 
                 label="Phone Number" name="phone" value={profile.phone} 
                 isEditing={isEditing} editable={isFieldEditable('phone')} onChange={handleChange} 
+                highlight={isEditing && isFieldEditable('phone')} // Visual clue
              />
+             {/* Editable for Employee */}
              <FormField 
                 label="Current Address" name="address" value={profile.address} fullWidth
-                isEditing={isEditing} editable={isFieldEditable('address')} onChange={handleChange} 
+                isEditing={isEditing} editable={isFieldEditable('address')} onChange={handleChange}
+                highlight={isEditing && isFieldEditable('address')} // Visual clue
              />
           </div>
         )}
 
-        {/* TAB 2: JOB DETAILS [Section 3.3.1] */}
+        {/* TAB 2: JOB DETAILS */}
         {activeTab === 'job' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 animate-fade-in">
              <FormField label="Employee ID" value={profile.employeeId} />
@@ -194,11 +240,10 @@ const EmployeeProfile = () => {
           </div>
         )}
 
-        {/* TAB 3: SALARY STRUCTURE [Section 3.3.1] */}
+        {/* TAB 3: SALARY */}
         {activeTab === 'salary' && (
           <div className="animate-fade-in space-y-6">
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Earnings */}
                 <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-600">
                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Earnings</h3>
                    <div className="space-y-3">
@@ -207,7 +252,6 @@ const EmployeeProfile = () => {
                       <div className="flex justify-between text-gray-600 dark:text-gray-300"><span>Special Allowance</span> <span>$1,000</span></div>
                    </div>
                 </div>
-                {/* Deductions */}
                 <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-600">
                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Deductions</h3>
                    <div className="space-y-3">
@@ -223,7 +267,7 @@ const EmployeeProfile = () => {
           </div>
         )}
 
-        {/* TAB 4: DOCUMENTS [Section 3.3.1] */}
+        {/* TAB 4: DOCUMENTS */}
         {activeTab === 'documents' && (
           <div className="animate-fade-in grid grid-cols-1 md:grid-cols-2 gap-4">
              <DocumentCard title="Employment Contract.pdf" date="Jan 12, 2022" size="2.4 MB" />
@@ -231,7 +275,6 @@ const EmployeeProfile = () => {
              <DocumentCard title="Tax Form W2.pdf" date="Jan 01, 2023" size="3.1 MB" />
              <DocumentCard title="ID Proof (Passport).jpg" date="Verified" size="4.5 MB" />
              
-             {/* Upload Button (Visual Only) */}
              <div className="border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-xl p-4 flex flex-col items-center justify-center text-gray-400 hover:text-primary hover:border-primary cursor-pointer transition-colors h-24">
                <UploadCloud size={24} />
                <span className="text-xs font-medium mt-1">Upload New Document</span>
@@ -245,20 +288,27 @@ const EmployeeProfile = () => {
 
 // --- Reusable Components ---
 
-const FormField = ({ label, name, value, type = "text", isEditing, editable, onChange, fullWidth }) => (
+const FormField = ({ label, name, value, type = "text", isEditing, editable, onChange, fullWidth, highlight }) => (
   <div className={`${fullWidth ? 'col-span-1 md:col-span-2' : ''}`}>
     <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5">{label}</label>
     
     {isEditing && editable ? (
-      <input 
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all shadow-sm"
-      />
+      <div className="relative">
+        <input 
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all shadow-sm
+            ${highlight ? 'border-primary ring-1 ring-primary/20' : 'border-gray-300 dark:border-gray-600'}
+          `}
+        />
+        {highlight && (
+           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-primary opacity-50"><Edit3 size={14}/></span>
+        )}
+      </div>
     ) : (
-      <p className={`text-lg font-medium text-gray-800 dark:text-white py-2 ${isEditing ? 'opacity-50' : ''}`}>
+      <p className={`text-lg font-medium text-gray-800 dark:text-white py-2 ${isEditing ? 'opacity-40 select-none' : ''}`}>
         {value}
       </p>
     )}
