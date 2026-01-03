@@ -12,8 +12,9 @@ const Navbar = () => {
   const isLoggedIn = false; 
 
   const handleNavigation = (path) => {
+    // If trying to access a protected route (like dashboard) while logged out
     if (path === '/dashboard' && !isLoggedIn) {
-      alert("Please Log In to access the Dashboard.");
+      // REMOVED ALERT: Directly redirect to login page
       navigate('/login');
     } else {
       navigate(path);
