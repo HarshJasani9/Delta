@@ -3,9 +3,10 @@ import Navbar from './Navbar';
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
+      {/* Removed max-w wrapper to allow Landing Page to be full width */}
+      <main className="flex-1 w-full">
         {children}
       </main>
     </div>
