@@ -43,22 +43,31 @@ const Dashboard = () => {
       {/* ADMIN VIEW [Section 3.2.2] */}
       {userRole === 'admin' && (
         <>
-          {/* Admin Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatsCard icon={<Users />} title="Total Employees" value="124" color="bg-blue-500" />
-            <StatsCard icon={<Briefcase />} title="Departments" value="8" color="bg-purple-500" />
-            <StatsCard icon={<Clock />} title="On Leave Today" value="12" color="bg-amber-500" />
-            <StatsCard icon={<AlertCircle />} title="Pending Requests" value="5" color="bg-rose-500" />
-          </div>
+        {/* Admin Stats Cards */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div onClick={() => navigate('/admin/employees')} className="cursor-pointer transition-transform hover:scale-[1.02]">
+      <StatsCard icon={<Users />} title="Total Employees" value="124" color="bg-blue-500" />
+    </div>
+    <StatsCard icon={<Briefcase />} title="Departments" value="8" color="bg-purple-500" />
+    <StatsCard icon={<Clock />} title="On Leave Today" value="12" color="bg-amber-500" />
+    <div onClick={() => navigate('/admin/leaves')} className="cursor-pointer transition-transform hover:scale-[1.02]">
+      <StatsCard icon={<AlertCircle />} title="Pending Requests" value="5" color="bg-rose-500" />
+    </div>
+  </div>
 
-          {/* Admin Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Recent Leave Requests */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-gray-800 dark:text-white">Recent Leave Requests</h3>
-                <button className="text-sm text-primary hover:underline">View All</button>
-              </div>
+  {/* Admin Quick Actions */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    {/* Recent Leave Requests */}
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="font-bold text-gray-800 dark:text-white">Recent Leave Requests</h3>
+        <button 
+          onClick={() => navigate('/admin/leaves')}
+          className="text-sm text-primary hover:underline font-medium"
+        >
+          View All
+        </button>
+      </div>
               
               <div className="space-y-4">
                 {[
