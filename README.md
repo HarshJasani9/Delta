@@ -7,6 +7,11 @@ A full-stack **Employee Management System** built with the **MERN Stack** (Mongo
 
 ---
 
+## 🌐 Live Deployment
+
+🚀 **Frontend (Netlify):**  
+https://dayflowdelta.netlify.app/
+
 ## 🌟 Features
 
 ### 🔐 Authentication & Authorization
